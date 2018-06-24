@@ -1,24 +1,25 @@
+from django.contrib.auth.models import User
 from rest_framework.generics import ListAPIView
 
-#from .serializers import UserSerializer, BookmarkSerializer, RecipeSerializer, RecipesTagSerializer, RecipesUserSerializer, TagsSerializer
 from . import serializers as szers
 
 from . import models as mod
 
-class UserApi():
-    pass
+class UserApi(ListAPIView):
+    queryset = User.objects.all()
+    serializer_class = szers.UserSerializer
     
     
 class BookmarkApi(ListAPIView):
-    queryset = mod.Bookmark.objects.all()
+    queryset = mod.Bookmarks.objects.all()
     serializer_class = szers.BookmarkSerializer
     
     
 class RecipeApi(ListAPIView):
-    queryset = mod.Recipe.objects.all()
+    queryset = mod.Recipes.objects.all()
     serializer_class = szers.RecipeSerializer
     
     
-class TagsApi(ListAPIView):
-    queryset = mod.Tag.objects.all()
-    serializer_class = szers.TagsSerializer
+class TagApi(ListAPIView):
+    queryset = mod.Tags.objects.all()
+    serializer_class = szers.TagSerializer

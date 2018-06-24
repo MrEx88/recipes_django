@@ -9,5 +9,6 @@ urlpatterns = [
     path('<int:recipe_id>/', views.view, name='view'),
     path('bookmarks', api.BookmarkApi.as_view(), name='bookmarks'),
     path('recipes', api.RecipeApi.as_view(), name='recipes'),
-    path('tags', api.TagsApi.as_view(), name='tags'),
+    path('tags', api.TagApi.as_view(), name='tags'),
+    path('users', api.UserApi.as_view(), name='users'),
 ]
