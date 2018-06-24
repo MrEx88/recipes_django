@@ -1,0 +1,27 @@
+{% load staticfiles %}
+<html>
+    <style type='text/css'>
+        textarea {
+            white-space: nowrap;
+            overflow-wrap: normal;
+            overflow-y:  hidden;
+            overflow-x:  hidden;
+        }
+    </style>
+    <body ng-app="recipes">
+        {% verbatim %}
+        <div ng-controller="RecipesController">
+            <div ng-repeat="recipe in recipes">
+                <h4>{{recipe.name}}</h4>
+                <img ng-show="{{recipe.imagePath}}" src="{{recipe.imagePath}}" alt="{{recipe.name}}" /><br />
+                <textarea wrap="soft" rows="{{getIngredientRowCount(recipe.ingredients)}}">{{recipe.ingredients}}</textarea>
+                <p>{{recipe.instructions}}</p>
+                
+            </div>
+        </div>
+        {% endverbatim %}
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
+        <script src="{% static "recipes\recipes.js" %}"></script>
+    </body>
+</html>
