@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from rest_framework.viewsets import ModelViewSet
 
 from . import serializers as szers
-
 from . import models as mod
+
 
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
