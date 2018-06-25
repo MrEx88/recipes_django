@@ -1,14 +1,12 @@
-from django.urls import path
-from django.views.generic import TemplateView
+from rest_framework.routers import DefaultRouter
 
 from . import views
 from . import api
 
-urlpatterns = [
-    path('', TemplateView.as_view(template_name='recipes/index.html')),
-    path('<int:recipe_id>/', views.view, name='view'),
-    path('bookmarks', api.BookmarkApi.as_view(), name='bookmarks'),
-    path('recipes', api.RecipeApi.as_view(), name='recipes'),
-    path('tags', api.TagApi.as_view(), name='tags'),
-    path('users', api.UserApi.as_view(), name='users'),
-]
+router = DefaultRouter()
+router.register(r'bookmaks', api.BookmarkViewSet)
+router.register(r'recipes', api.RecipeViewSet)
+router.register(r'tags', api.TagViewSet)
+router.register(r'users', api.UserViewSet)
+
+urlpatterns = router.urls
