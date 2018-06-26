@@ -1,6 +1,6 @@
 {% load staticfiles %}
 <!DOCTYPE html>
-<html>
+<html lang="en" ng-app="recipes">
     <style type='text/css'>
         textarea {
             white-space: nowrap;
@@ -9,21 +9,22 @@
             overflow-x:  hidden;
         }
     </style>
-    <body ng-app="recipes">
-        {% verbatim %}
-        <div ng-controller="RecipesController">
-            <button ng-click="add()" ng-show="show.view_recipes">add recipe</button>
-            <add-recipe></add-recipe>
-            <div ng-repeat="recipe in recipes" ng-show="show.view_recipes">
-                <view-recipe></view-recipe>
-                
+    <body>
+        <div class="container">
+            <div class="navbar">
+                <ul class="nav">
+                    <li><a href="#!/addRecipe">Add recipe</a></li>
+                </ul>
             </div>
         </div>
-        {% endverbatim %}
+        <ng-view></ng-view>
         
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
-        <script src="{% static "recipes\recipes.js" %}"></script>
-        <script src="{% static "recipes\view_recipe.directive.js" %}"></script>
-        <script src="{% static "recipes\add_recipe.directive.js" %}"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-route.min.js"></script>
+        <script src="{% static "recipes\js\app.js" %}"></script>
+        <script src="{% static "recipes\js\MyRecipesController.js" %}"></script>
+        <script src="{% static "recipes\js\AddRecipeController.js" %}"></script>
+        <script src="{% static "recipes\js\view-recipe.directive.js" %}"></script>
+        <script src="{% static "recipes\js\add-recipe.directive.js" %}"></script>
     </body>
 </html>
