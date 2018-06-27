@@ -20,6 +20,11 @@ class RecipeViewSet(ModelViewSet):
     serializer_class = szers.RecipeSerializer
     
     
+class SubRecipeViewSet(ModelViewSet):
+    queryset = mod.SubRecipes.objects.all()
+    serializer_class = szers.SubRecipeSerializer
+    
+    
 class TagViewSet(ModelViewSet):
     queryset = mod.Tags.objects.all()
     serializer_class = szers.TagSerializer

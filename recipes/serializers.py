@@ -16,14 +16,25 @@ class SubRecipeSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubRecipes
         fields = '__all__'
+        extra_kwargs = {
+            'name': {'validators': []},
+        }
         
         
 class RecipeSerializer(serializers.ModelSerializer):
-    subRecipes = SubRecipeSerializer(read_only=True, many=True)
+    subRecipes = SubRecipeSerializer(many=True, read_only=False)
     
     class Meta:
         model = Recipes
         fields = '__all__'
+        
+    def update(self, instance, validated_data):
+        sub_recipes_data = validated_data.pop('subRecipes')
+        subRecipes = instance.subRecipes
+        print(subRecipes)
+        instance.save()
+        subRecipes.save()
+        return instance
         
         
 class UserSerializer(serializers.ModelSerializer):
