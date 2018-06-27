@@ -3,6 +3,12 @@
     <div class="add-recipe">
         <h3>Add Recipe</h3>
         <hr />
-        <label>Name: </label><input type="text" />
+        <label>Name:</label><br />
+        <input type="text" ng-model="recipe.name" /><br>
+        <label>Ingredients:</label><br />
+        <textarea rows="5" cols="10" ng-model="recipe.ingredients"></textarea><br />
+        <label>Instructions:</label><br />
+        <textarea rows="5" cols="10" ng-model="recipe.instructions"></textarea>
+        <button ng-click="addRecipe()">Add</button>
     </div>
 </div>
