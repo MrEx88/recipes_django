@@ -12,6 +12,7 @@ class BookmarkSerializer(serializers.ModelSerializer):
         
         
 class SubRecipeSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False)
     
     class Meta:
         model = SubRecipes
@@ -29,11 +30,20 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def update(self, instance, validated_data):
-        sub_recipes_data = validated_data.pop('subRecipes')
-        subRecipes = instance.subRecipes
-        print(subRecipes)
         instance.save()
-        subRecipes.save()
+        
+        sub_recipes = validated_data.pop('subRecipes')
+        for data in sub_recipes:
+            id = data.get('id', None)
+            if id:
+                sub_recipe = SubRecipes.objects.get(id=id)
+                sub_recipe.name = data.get('name', sub_recipe.name)
+                sub_recipe.ingredients = data.get('ingredients', sub_recipe.ingredients)
+                sub_recipe.insructions = data.get('instructions', sub_recipe.insructions)
+                sub_recipe.save()
+            else:
+                SubRecipes.objects.create(**data)
+                
         return instance
         
         
