@@ -23,7 +23,7 @@ class Recipes(models.Model):
     name = models.CharField(unique=True, max_length=100)
     ingredients = models.TextField()
     instructions = models.TextField(blank=True, null=True)
-    imagepath = models.CharField(db_column='imagePath', max_length=255, blank=True, null=True)
+    imagePath = models.CharField(db_column='imagePath', max_length=255, blank=True, null=True)
     created = models.DateTimeField(blank=True, null=True)
     modified = models.DateTimeField()
     user = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE)

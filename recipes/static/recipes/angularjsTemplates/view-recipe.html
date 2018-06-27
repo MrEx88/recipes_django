@@ -1,10 +1,17 @@
 <h4>{{recipe.name}}</h4>
-<img ng-show="{{recipe.imagePath}}" src="{{recipe.imagePath}}" alt="{{recipe.name}}" />
+<img src="../../static/recipes/{{recipe.imagePath}}" alt="{{recipe.name}}" />
 
 <h4>Ingredients</h4>
 <ul>
     <li ng-repeat="ingredient in ingredientsToArray(recipe.ingredients) track by $index">{{ingredient}}</li>
 </ul>
+<div ng-repeat="subRecipe in recipe.subRecipes">
+    <h5>{{subRecipe.name}}</h5>
+    <ul>
+        <li ng-repeat="ingredient in ingredientsToArray(subRecipe.ingredients) track by $index">{{ingredient}}</li>
+    </ul>
+    <p>{{subRecipe.instructions}}</p>
+</div>
 <h4>Instructions</h4>
 <p>{{recipe.instructions}}</p>
 <hr />

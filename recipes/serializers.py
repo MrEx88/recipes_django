@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.utils import timezone
 from rest_framework import serializers
 
 from .models import Bookmarks, Recipes, RecipesTags, RecipesUsers, SubRecipes, Tags
@@ -30,6 +31,11 @@ class RecipeSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
     def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.ingredients = validated_data.get('ingredients', instance.name)
+        instance.instructions = validated_data.get('instructions', instance.instructions)
+        instance.imagePath = validated_data.get('imagePath', instance.imagePath)
+        instance.modified = timezone.now()
         instance.save()
         
         sub_recipes = validated_data.pop('subRecipes')
@@ -39,7 +45,7 @@ class RecipeSerializer(serializers.ModelSerializer):
                 sub_recipe = SubRecipes.objects.get(id=id)
                 sub_recipe.name = data.get('name', sub_recipe.name)
                 sub_recipe.ingredients = data.get('ingredients', sub_recipe.ingredients)
-                sub_recipe.insructions = data.get('instructions', sub_recipe.insructions)
+                sub_recipe.instructions = data.get('instructions', sub_recipe.instructions)
                 sub_recipe.save()
             else:
                 SubRecipes.objects.create(**data)
