@@ -11,6 +11,10 @@
             $scope.getIngredientRowCount = function(ingredients) {
                 return (ingredients.match(/\r\n/g) || []).length;
             }
+            
+            $scope.ingredientsToArray = function(ingredients) {
+                return ingredients.split("\n");
+            }
         }
     ]);
 }());

@@ -38,9 +38,34 @@ class Recipes(models.Model):
         return self.pub_date >= timezone.now() - datetime.timedelta(days=7)
         
         
+class SubRecipes(models.Model):
+    name = models.CharField(unique=True, max_length=100)
+    ingredients = models.TextField()
+    instructions = models.TextField(blank=True, null=True)
+    recipe = models.ForeignKey(Recipes, related_name='subRecipes', on_delete=models.CASCADE)
+    
+    class Meta:
+        db_table = 'SubRecipes'
+        
+    def __str__(self):
+        return '{{{0}: {1}}}'.format(self.id, self.name)
+        
+        
+class Tags(models.Model):
+    name = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    created = models.DateTimeField(blank=True, null=True)
+    modified = models.DateTimeField(blank=True, null=True)
+    
+    class Meta:
+        db_table = 'tags'
+        
+    def __str__(self):
+        return '{{{0}: {1}}}'.format(self.id, self.name)
+        
+        
 class RecipesTags(models.Model):
     recipe = models.ForeignKey(Recipes, related_name='tagsRecipe', on_delete=models.CASCADE, primary_key=True)
-    tag = models.ForeignKey('Tags', related_name='recipesTag', on_delete=models.CASCADE)
+    tag = models.ForeignKey(Tags, related_name='recipesTag', on_delete=models.CASCADE)
     
     class Meta:
         db_table = 'recipes_tags'
@@ -60,15 +85,3 @@ class RecipesUsers(models.Model):
         
     def __str__(self):
         return '{{{0}, {1}}}'.format(self.recipe.id, self.user.id)
-        
-        
-class Tags(models.Model):
-    name = models.CharField(unique=True, max_length=255, blank=True, null=True)
-    created = models.DateTimeField(blank=True, null=True)
-    modified = models.DateTimeField(blank=True, null=True)
-    
-    class Meta:
-        db_table = 'tags'
-        
-    def __str__(self):
-        return '{{{0}: {1}}}'.format(self.id, self.name)

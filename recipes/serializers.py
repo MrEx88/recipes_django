@@ -1,7 +1,7 @@
 from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import Bookmarks, Recipes, RecipesTags, RecipesUsers, Tags
+from .models import Bookmarks, Recipes, RecipesTags, RecipesUsers, SubRecipes, Tags
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
@@ -11,7 +11,15 @@ class BookmarkSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
         
+class SubRecipeSerializer(serializers.ModelSerializer):
+    
+    class Meta:
+        model = SubRecipes
+        fields = '__all__'
+        
+        
 class RecipeSerializer(serializers.ModelSerializer):
+    subRecipes = SubRecipeSerializer(read_only=True, many=True)
     
     class Meta:
         model = Recipes

@@ -1,5 +1,10 @@
 <h4>{{recipe.name}}</h4>
 <img ng-show="{{recipe.imagePath}}" src="{{recipe.imagePath}}" alt="{{recipe.name}}" />
-<br />
-<textarea wrap="soft" rows="{{getIngredientRowCount(recipe.ingredients)}}">{{recipe.ingredients}}</textarea>
+
+<h4>Ingredients</h4>
+<ul>
+    <li ng-repeat="ingredient in ingredientsToArray(recipe.ingredients) track by $index">{{ingredient}}</li>
+</ul>
+<h4>Instructions</h4>
 <p>{{recipe.instructions}}</p>
+<hr />

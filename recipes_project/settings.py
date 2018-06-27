@@ -81,7 +81,10 @@ DATABASES = {
         'NAME': 'recipes_db',
         'USER': 'root',
         'PASSWORD': '',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {
+            'init_command': 'SET storage_engine=INNODB',
+        }
     }
 }
 
