@@ -16,7 +16,7 @@ class BookmarkViewSet(ModelViewSet):
     
     
 class RecipeViewSet(ModelViewSet):
-    queryset = mod.Recipes.objects.all()
+    queryset = mod.Recipes.objects.all().order_by('-modified')
     serializer_class = szers.RecipeSerializer
     
     
