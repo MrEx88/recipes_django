@@ -5,6 +5,11 @@
         <hr />
         <label>Name:</label><br />
         <input type="text" ng-model="recipe.name" /><br>
+        <div image-dropzone="[image/png, image/jpeg, image/gif]" file="image" file-name="imageFileName" data-max-file-size="3">
+            <span>Drop image here</span>
+        </div>
+        <img ng-src="{{image}}" />
+        <span class="file-name">{{imageFileName}}</span>
         <label>Ingredients:</label><br />
         <textarea rows="5" cols="10" ng-model="recipe.ingredients"></textarea><br />
         <label>Instructions:</label><br />
