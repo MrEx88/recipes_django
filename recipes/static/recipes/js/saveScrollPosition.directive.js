@@ -23,8 +23,6 @@
                     $timeout(function () {
                         $(window).scrollTop(scope.scrollPos[$location.path()] ? scope.scrollPos[$location.path()] : 0);
                         scope.okSaveScroll = true;
-                        $(window).scrollTop(400);
-                        $(window).scrollY = 400;
                     }, 0);
                 });
 
