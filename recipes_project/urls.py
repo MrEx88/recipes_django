@@ -15,11 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name='recipes/index.html')),
+    path('', ensure_csrf_cookie(TemplateView.as_view(template_name='recipes/index.html'))),
+    path('auth_api/', include('auth_api.urls')),
     path('api/', include('recipes.urls')),
     path('admin/', admin.site.urls),
 ]
