@@ -4,7 +4,7 @@ from . import views
 from . import api
 
 router = DefaultRouter()
-router.register(r'bookmaks', api.BookmarkViewSet)
+router.register(r'bookmarks', api.BookmarkViewSet)
 router.register(r'recipes', api.RecipeViewSet)
 router.register(r'tags', api.TagViewSet)
 router.register(r'users', api.UserViewSet)

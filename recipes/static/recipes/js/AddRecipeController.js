@@ -1,4 +1,4 @@
-(function(){
+(function() {
     'use strict';
     
     angular.module('recipes')
@@ -17,7 +17,7 @@
                 $scope.recipe.modified = now;
                 $scope.recipe.user = 1; // todo: find out how to get user id
                 //$scope.recipe.base64Image = $scope.image; //see if we can send image this way
-                $http.post('/recipes/recipes/', $scope.recipe)
+                $http.post('/api/recipes/', $scope.recipe)
                     .then(function(response) {
                         //redirect to recipes
                     })
@@ -25,6 +25,5 @@
                         alert('error saving recipe');
                     });
             };
-        }
-    ]);
+        }]);
 })();
