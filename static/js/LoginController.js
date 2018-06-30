@@ -2,7 +2,7 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('LoginController', ['$scope', '$http', function ($scope, $http, $location) {
+        .controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
             $scope.user = {};
             
             //{username: 'admin', password: 'admin1234'}
