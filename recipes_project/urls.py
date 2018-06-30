@@ -20,9 +20,8 @@ from django.views.generic import TemplateView
 
 
 urlpatterns = [
-    path('', ensure_csrf_cookie(TemplateView.as_view(template_name='recipes/index.html'))),
+    path('', ensure_csrf_cookie(TemplateView.as_view(template_name='index.html'))),
     path('auth_api/', include('auth_api.urls')),
-    path('login/', TemplateView.as_view(template_name='recipes/login.html')),
     path('api/', include('recipes.urls')),
     path('admin/', admin.site.urls),
 ]

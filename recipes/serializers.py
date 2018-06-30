@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils import timezone
+
 from rest_framework import serializers
 
 from .models import Bookmarks, Recipes, RecipesTags, RecipesUsers, SubRecipes, Tags
@@ -59,7 +60,7 @@ class UserSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = User
-        fields = '__all__'
+        fields = ('id', 'name')
         
         
 class RecipesTagSerializer(serializers.ModelSerializer):

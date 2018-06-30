@@ -4,7 +4,7 @@
     angular.module('recipes')
         .directive('addRecipe', function() {
             return {
-                templateUrl: '/static/recipes/angularjsTemplates/add-recipe.html',
+                templateUrl: '/static/html/add-recipe.html',
                 restrict: 'E'
             }
         });

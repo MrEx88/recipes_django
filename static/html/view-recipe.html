@@ -1,5 +1,5 @@
 <h4>{{recipe.name}}</h4>
-<img ng-src="../../static/recipes/{{recipe.imagePath}}" />
+<img ng-src="../../static/{{recipe.imagePath}}" ng-if="recipe.imagePath" />
 
 <h4>Ingredients</h4>
 <ul>

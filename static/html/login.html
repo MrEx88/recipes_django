@@ -1,0 +1,9 @@
+<div class="container centered">
+    <form>
+        <div>{{login_error}}</div>
+        <input type="text" ng-model="user.username" placeholder="username"><br>
+        <input type="password" ng-model="user.password" placeholder="password"><br>
+        <input ng-click="login()" type="submit" value="login">
+        <input ng-click="signup()" type="submit" value="sign up">
+    </form>
+</div>
