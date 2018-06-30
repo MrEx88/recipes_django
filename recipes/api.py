@@ -10,28 +10,28 @@ from . import models as mod
 class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = szers.UserSerializer
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     
 class BookmarkViewSet(ModelViewSet):
     queryset = mod.Bookmarks.objects.all()
     serializer_class = szers.BookmarkSerializer
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     
 class RecipeViewSet(ModelViewSet):
     queryset = mod.Recipes.objects.all().order_by('-modified')
     serializer_class = szers.RecipeSerializer
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     
 class SubRecipeViewSet(ModelViewSet):
     queryset = mod.SubRecipes.objects.all()
     serializer_class = szers.SubRecipeSerializer
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
     
     
 class TagViewSet(ModelViewSet):
     queryset = mod.Tags.objects.all()
     serializer_class = szers.TagSerializer
-    #permission_classes = (permissions.IsAuthenticated,)
+    permission_classes = (permissions.IsAuthenticated,)
