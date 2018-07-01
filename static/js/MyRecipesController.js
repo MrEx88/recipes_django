@@ -2,19 +2,16 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('MyRecipesController', ['$scope', '$http', function ($scope, $http) {
+        .controller('MyRecipesController', ['$scope', 'recipesService', function ($scope, recipesService) {
             $scope.recipes = [];
+            $scope.sortOrder = '-modified';
             
-            $http.get('/api/recipes/').then(function(response) {
-               $scope.recipes = response.data;
+            recipesService.getUsersRecipes().then(function(data) {
+                $scope.recipes = data;
             });
             
-            $scope.getIngredientRowCount = function(ingredients) {
-                return (ingredients.match(/\r\n/g) || []).length;
-            }
-            
             $scope.ingredientsToArray = function(ingredients) {
-                return ingredients.split("\n");
+                return ingredients.split('\r\n');
             }
         }]);
 }());

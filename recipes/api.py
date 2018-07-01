@@ -18,12 +18,17 @@ class BookmarkViewSet(ModelViewSet):
     serializer_class = szers.BookmarkSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
+    
     
 class RecipeViewSet(ModelViewSet):
-    queryset = mod.Recipes.objects.all().order_by('-modified')
+    queryset = mod.Recipes.objects.all().order_by('modified')
     serializer_class = szers.RecipeSerializer
     permission_classes = (permissions.IsAuthenticated,)
     
+    def get_queryset(self):
+        return self.queryset.filter(user=self.request.user)
     
 class SubRecipeViewSet(ModelViewSet):
     queryset = mod.SubRecipes.objects.all()

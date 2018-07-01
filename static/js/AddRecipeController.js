@@ -2,7 +2,7 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('AddRecipeController', ['$scope', '$http', function ($scope, $http) {
+        .controller('AddRecipeController', ['$scope', 'recipesService', function ($scope, recipesService) {
             $scope.recipe = {};
             
             $scope.image = null;
@@ -17,8 +17,8 @@
                 $scope.recipe.modified = now;
                 $scope.recipe.user = 1; // todo: find out how to get user id
                 //$scope.recipe.base64Image = $scope.image; //see if we can send image this way
-                $http.post('/api/recipes/', $scope.recipe)
-                    .then(function(response) {
+                recipesService.addRecipe($scope.recipe)
+                    .then(function(data) {
                         //redirect to recipes
                     })
                     .catch(function() {

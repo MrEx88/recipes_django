@@ -1,7 +1,12 @@
-<div ng-controller="MyRecipesController">
-    <h3>My Recipes</h3>
-    <br />
-    <div ng-repeat="recipe in recipes">
-        <view-recipe></view-recipe>
-    </div>
+<h3>My Recipes</h3>
+<br />
+Order:
+<select ng-model="sortOrder">
+    <option value="+name">name: ascending</option>
+    <option value="-name">name: descending</option>
+    <option value="-modified">recently modified</option>
+    <option value="+created">oldest</option>
+</select>
+<div ng-repeat="recipe in recipes|orderBy:sortOrder">
+    <view-recipe></view-recipe>
 </div>

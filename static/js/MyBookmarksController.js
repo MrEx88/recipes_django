@@ -2,10 +2,10 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('MyBookmarksController', ['$scope', '$http', function ($scope, $http) {
+        .controller('MyBookmarksController', ['$scope', 'recipesService', function ($scope, recipesService) {
             $scope.bookmarks = [];
-            $http.get('/api/bookmarks/').then(function(response) {
-               $scope.bookmarks = response.data;
+            recipesService.getUsersBookmarks().then(function(data) {
+               $scope.bookmarks = data;
             });
         }]);
 }());

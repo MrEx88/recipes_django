@@ -2,18 +2,17 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('LoginController', ['$scope', '$http', '$location', function ($scope, $http, $location) {
+        .controller('LoginController', ['$scope', 'userService', '$location', function ($scope, userService, $location) {
             $scope.user = {};
             
             //{username: 'admin', password: 'admin1234'}
             $scope.login = function() {
-                $http.post('/auth_api/login/', $scope.user)
-                    .then(function() {
-                        $location.url('/');
-                    })
-                    .catch(function() {
-                        $scope.login_error="Invalid username/password combination.";
-                    });
+                userService.login($scope.user).then(function(data) {
+                    $location.url('/');
+                })
+                .catch(function() {
+                    $scope.login_error="Invalid username/password combination.";
+                });
             }
         }]);
 }());
