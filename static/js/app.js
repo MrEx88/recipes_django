@@ -14,9 +14,14 @@
                   })
                   .when('/myRecipes/',
                       {
-                          templateUrl: '/static/html/my-recipes.html',
-                          controller: 'MyRecipesController',
+                          templateUrl: '/static/html/recipes.html',
+                          controller: 'RecipesController',
                       })
+                  .when('/allRecipes/',
+                  {
+                      templateUrl: '/static/html/recipes.html',
+                      controller: 'RecipesController',
+                  })
                   .when('/addRecipe/',
                       {
                           templateUrl: '/static/html/add-recipe.html',

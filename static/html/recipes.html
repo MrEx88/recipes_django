@@ -7,7 +7,7 @@
     <option value="+created">oldest</option>
 </select>
 <input type="checkbox" ng-model="reverse" />
-<label>Reverse</label><br />
+<span>Reverse</span><br />
 <label>Filter:</label><br />
 <input type="text" ng-model="filterBy">
 <div ng-repeat="recipe in recipes| filter: filterBy | orderBy:sortOrder:reverse">

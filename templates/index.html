@@ -13,34 +13,36 @@
                 <div class="navbar-header">
                     <span class="navbar-brand">Recipes</span>
                 </div>
-                <div class="navbar-collapse collapse" id="navbar">
-                    <ul class="nav navbar-nav">
-                        <li class="active">
-                            <a href"#!/recipes">my recipes</a>
-                        </li>
-                        <li>
-                            <a href="#!/addRecipe">add recipe</a>
-                        </li>
-                        <li>
-                            <a href"#!/allRecipes">all recipes</a>
-                        </li>
-                        <li class="dropdown">
-                            <a href="#" target="_self" class="dropdown-toggle" role="button" aria-expanded="true" aria-haspopup="true" data-toggle="dropdown">
-                                Bookmarks
-                                <span class="caret"></span>
-                            </a>
-                            {% verbatim %}
-                            <ul class="dropdown-menu" ng-controller="MyBookmarksController">
-                                <li ng-repeat="bookmark in bookmarks track by $index"><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></li>
-                            </ul>
-                            {% endverbatim %}
-                        </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li class="active">
-                            <a href="/auth_api/logout/">logout</a>
-                        </li>
-                    </ul>
+                <div ng-controller="NavbarController">
+                    <div class="navbar-collapse collapse" id="navbar" ng-show="isLoggedIn()">
+                        <ul class="nav navbar-nav">
+                            <li class="active">
+                                <a href="#!/myrecipes/">my recipes</a>
+                            </li>
+                            <li>
+                                <a href="#!/addRecipe/">add recipe</a>
+                            </li>
+                            <li>
+                                <a href="#!/allRecipes/">all recipes</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#" target="_self" class="dropdown-toggle" role="button" aria-expanded="true" aria-haspopup="true" data-toggle="dropdown">
+                                    Bookmarks
+                                    <span class="caret"></span>
+                                </a>
+                                {% verbatim %}
+                                <ul class="dropdown-menu" ng-controller="MyBookmarksController">
+                                    <li ng-repeat="bookmark in bookmarks track by $index"><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></li>
+                                </ul>
+                                {% endverbatim %}
+                            </li>
+                        </ul>
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="active">
+                                <a href ng-click="logout()">logout</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </nav>
@@ -57,9 +59,10 @@
         <script src="{% static "js\app.js" %}"></script>
         <script src="{% static "js\user.service.js" %}"></script>
         <script src="{% static "js\recipes.service.js" %}"></script>
+        <script src="{% static "js\NavbarController.js" %}"></script>
         <script src="{% static "js\LoginController.js" %}"></script>
         <script src="{% static "js\MyBookmarksController.js" %}"></script>
-        <script src="{% static "js\MyRecipesController.js" %}"></script>
+        <script src="{% static "js\RecipesController.js" %}"></script>
         <script src="{% static "js\AddRecipeController.js" %}"></script>
         <script src="{% static "js\saveScrollPosition.directive.js" %}"></script>
         <script src="{% static "js\view-recipe.directive.js" %}"></script>

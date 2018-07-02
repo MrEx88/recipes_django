@@ -5,7 +5,6 @@
         .controller('LoginController', ['$scope', 'userService', '$location', function ($scope, userService, $location) {
             $scope.user = {};
             
-            //{username: 'admin', password: 'admin1234'}
             $scope.login = function() {
                 userService.login($scope.user).then(function(data) {
                     $location.url('/');

@@ -10,13 +10,14 @@
                             });
             },
             logout: function() {
-                return $http.post('/auth_api/logout/')
+                return $http.get('/auth_api/logout/')
                             .then(function(response) {
+                                loggedInUser = {};
                                 return response.data;
                             });
             },
             isLoggedIn: function() {
-                return loggedInUser.username != undefined && loggedInUser.usernname != "" && loggedInUser.username != null;
+                return angular.equals(loggedInUser, {});
             }
         };
     }]);

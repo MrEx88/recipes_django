@@ -2,10 +2,15 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('MyRecipesController', ['$scope', 'recipesService', function ($scope, recipesService) {
+        .controller('RecipesController', ['$scope', '$location', 'recipesService', function ($scope, $location, recipesService) {
             $scope.recipes = [];
             $scope.sortOrder = '-modified';
-            
+            var titles = {
+                '/myRecipes/': 'my recipes',
+                '/allRecipes': 'all recipes'
+            }
+            $scope.title = titles[$location.path()];
+            console.log($location.path());
             recipesService.getUsersRecipes().then(function(data) {
                 $scope.recipes = data;
             });
