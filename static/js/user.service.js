@@ -17,7 +17,7 @@
                             });
             },
             isLoggedIn: function() {
-                return angular.equals(loggedInUser, {});
+                return !(angular.equals(loggedInUser, {}));
             }
         };
     }]);

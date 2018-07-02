@@ -2,11 +2,12 @@
     'use strict';
     
     angular.module('recipes')
-        .controller('LoginController', ['$scope', 'userService', '$location', function ($scope, userService, $location) {
+        .controller('LoginController', ['$scope', '$rootScope', '$location', 'userService', function ($scope, $rootScope, $location, userService) {
             $scope.user = {};
             
             $scope.login = function() {
                 userService.login($scope.user).then(function(data) {
+                    $rootScope.$broadcast('loggedIn', data);
                     $location.url('/');
                 })
                 .catch(function() {
