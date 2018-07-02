@@ -1,6 +1,6 @@
 (function() {
     angular.module('recipes').factory('userService', ['$http', function($http) {
-        loggedInUser = {};
+        var loggedInUser = {};
         return {
             login: function(user) {
                 return $http.post('/auth_api/login/', user)

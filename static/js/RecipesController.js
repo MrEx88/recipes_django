@@ -6,8 +6,8 @@
             $scope.recipes = [];
             $scope.sortOrder = '-modified';
             var titles = {
-                '/myRecipes/': 'my recipes',
-                '/allRecipes': 'all recipes'
+                '/myRecipes/': 'My Recipes',
+                '/allRecipes/': 'All Recipes'
             }
             $scope.title = titles[$location.path()];
             console.log($location.path());
