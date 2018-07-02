@@ -29,7 +29,14 @@ class RecipeViewSet(ModelViewSet):
     
     def get_queryset(self):
         return self.queryset.filter(user=self.request.user)
-    
+
+
+class AllRecipeViewSet(ModelViewSet):
+    queryset = mod.Recipes.objects.all().order_by('modified')
+    serializer_class = szers.RecipeSerializer
+    permission_classes = (permissions.IsAuthenticated,)
+
+
 class SubRecipeViewSet(ModelViewSet):
     queryset = mod.SubRecipes.objects.all()
     serializer_class = szers.SubRecipeSerializer

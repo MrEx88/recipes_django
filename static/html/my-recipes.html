@@ -1,12 +1,15 @@
 <h3>My Recipes</h3>
 <br />
-Order:
+<label>Sort:</label><br />
 <select ng-model="sortOrder">
-    <option value="+name">name: ascending</option>
-    <option value="-name">name: descending</option>
+    <option value="+name">name</option>
     <option value="-modified">recently modified</option>
     <option value="+created">oldest</option>
 </select>
-<div ng-repeat="recipe in recipes|orderBy:sortOrder">
+<input type="checkbox" ng-model="reverse" />
+<label>Reverse</label><br />
+<label>Filter:</label><br />
+<input type="text" ng-model="filterBy">
+<div ng-repeat="recipe in recipes| filter: filterBy | orderBy:sortOrder:reverse">
     <view-recipe></view-recipe>
 </div>
