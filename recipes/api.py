@@ -34,6 +34,7 @@ class RecipeViewSet(ModelViewSet):
 class AllRecipeViewSet(ModelViewSet):
     queryset = mod.Recipes.objects.all().order_by('modified')
     serializer_class = szers.RecipeSerializer
+    http_method_names = ['get']
     permission_classes = (permissions.IsAuthenticated,)
 
 

@@ -4,4 +4,4 @@ IF "%val%" == "" (
 	pip install pycodestyle
 )
 
-pycodestyle . --ignore=W293 --max-line-length=120 > "pep8 errors.txt"
+pycodestyle . --max-line-length=120 > "pep8 errors.txt"
