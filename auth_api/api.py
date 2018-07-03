@@ -22,10 +22,10 @@ class LoginView(views.APIView):
                 'status': 'Unauthorized',
                 'message': 'Username or password is incorrect'
             }, status=status.HTTP_401_UNAUTHORIZED)
-            
+
         return response
-        
-        
+
+
 class LogoutView(views.APIView):
     def get(self, request):
         logout(request)
