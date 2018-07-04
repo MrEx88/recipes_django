@@ -70,7 +70,6 @@ class UpdateRecipesTests(APITestCase, UserMixin):
                                              ingredients='fried',
                                              instructions='steak',
                                              user=self.superuser)
-        self.lastModified = self.recipe.modified
         self.data = {
             'name': 'n',
             'instructions': '1',
@@ -86,7 +85,7 @@ class UpdateRecipesTests(APITestCase, UserMixin):
         self.assertEqual(recipe.name, self.data['name'])
         self.assertEqual(recipe.ingredients, self.data['ingredients'])
         self.assertEqual(recipe.instructions, self.data['instructions'])
-        self.assertNotEqual(recipe.modified, self.lastModified)
+        self.assertNotEqual(recipe.modified, self.recipe.modified)
 
     def test_cant_update_non_existent_recipe(self):
         response = self.client.put('/api/recipes/{}/'.format(self.recipe.id+1), self.data, format="json")
@@ -204,6 +203,9 @@ class ReadBookmarksTests(APITestCase, UserMixin):
     def test_can_read_bookmark(self):
         response = self.client.get('/api/bookmarks/{}/'.format(self.bookmark.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'], self.bookmark.id)
+        self.assertEqual(response.data['name'], self.bookmark.name)
+        self.assertEqual(response.data['url'], self.bookmark.url)
 
     def test_cant_read_non_existent_bookmark(self):
         response = self.client.get('/api/bookmarks/{}/'.format(self.bookmark.id+1))
@@ -219,6 +221,10 @@ class UpdateBookmarksTests(APITestCase, UserMixin):
     def test_can_update_bookmark(self):
         response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        bookmark = Bookmarks.objects.get(pk=self.bookmark.id)
+        self.assertEqual(bookmark.name, self.data['name'])
+        self.assertEqual(bookmark.url, self.data['url'])
+        self.assertNotEqual(bookmark.modified, self.bookmark.modified)
 
     def test_cant_update_non_existent_bookmark(self):
         response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id+1))
@@ -271,6 +277,8 @@ class ReadTagsTests(APITestCase, UserMixin):
     def test_can_read_tag(self):
         response = self.client.get('/api/tags/{}/'.format(self.tag.id))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data['id'], self.tag.id)
+        self.assertEqual(response.data['name'], self.tag.name)
 
     def _test_cant_read_non_existent_tag(self):
         response = self.client.get('/api/tags/{}'.format(self.tag.id))
@@ -283,12 +291,35 @@ class UpdateTagsTests(APITestCase, UserMixin):
         self.tag = Tags.objects.create(name='new')
         self.data = {'name': 'new1'}
 
-    def test_can_create_tag(self):
-        response = self.client.post('/api/tags/', self.data, format='json')
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+    def test_can_update_tag(self):
+        response = self.client.put('/api/tags/{}/'.format(self.tag.id), self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        tag = Tags.objects.get(pk=self.tag.id)
+        self.assertEqual(tag.name, self.data['name'])
+        self.assertNotEqual(tag.modified, self.tag.modified)
+
+    def test_can_update_non_existent_tag(self):
+        response = self.client.put('/api/tags/{}/'.format(self.tag.id+1), self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_cant_create_tag_with_wrong_data_type(self):
         data = dict(self.data)
         data['name'] = [1]
-        response = self.client.post('/api/tags/', data, format='json')
+        response = self.client.put('/api/tags/{}/'.format(self.tag.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class DeleteTagsTests(APITestCase, UserMixin):
+    def setUp(self):
+        self.create_user_and_login()
+        self.tag = Tags.objects.create(name='new')
+
+    def test_can_delete_tag(self):
+        response = self.client.delete('/api/tags/{}/'.format(self.tag.id))
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        with self.assertRaises(self.tag.DoesNotExist):
+            Tags.objects.get(pk=self.tag.id)
+
+    def test_cant_delete_non_existent_tag(self):
+        response = self.client.delete('/api/tags/{}/'.format(self.tag.id+1))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
