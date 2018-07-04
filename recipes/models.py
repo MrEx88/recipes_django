@@ -8,8 +8,8 @@ from django.utils import timezone
 class Bookmarks(models.Model):
     name = models.CharField(max_length=100)
     url = models.CharField(max_length=255)
-    created = models.DateTimeField()
-    modified = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, related_name='bookmarks', on_delete=models.CASCADE)
 
     class Meta:
@@ -24,8 +24,8 @@ class Recipes(models.Model):
     ingredients = models.TextField()
     instructions = models.TextField(blank=True, null=True)
     imagePath = models.CharField(db_column='imagePath', max_length=255, blank=True, null=True)
-    created = models.DateTimeField(blank=True, null=True)
-    modified = models.DateTimeField()
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE)
 
     class Meta:
@@ -53,8 +53,8 @@ class SubRecipes(models.Model):
 
 class Tags(models.Model):
     name = models.CharField(unique=True, max_length=255, blank=True, null=True)
-    created = models.DateTimeField(blank=True, null=True)
-    modified = models.DateTimeField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'tags'

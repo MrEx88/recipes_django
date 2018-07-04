@@ -5,7 +5,7 @@ from django.utils import timezone
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from .models import Bookmarks, Recipes
+from .models import Bookmarks, Recipes, Tags
 
 
 class UserMixin():
@@ -18,15 +18,11 @@ class UserMixin():
 class CreateRecipeTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
         self.data = {
             'name': 'n',
             'instructions': '1',
             'ingredients': '1',
-            'created': now,
-            'modified': now,
-            'user':
-            self.superuser.id,
+            'user': self.superuser.id,
             'subRecipes': []
         }
 
@@ -41,7 +37,7 @@ class CreateRecipeTests(APITestCase, UserMixin):
 
     def test_cant_create_recipe_with_wrong_type(self):
         data = dict(self.data)
-        data['created'] = 1
+        data['name'] = [1]
         response = self.client.post('/api/recipes/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -49,12 +45,9 @@ class CreateRecipeTests(APITestCase, UserMixin):
 class ReadRecipeTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
         self.recipe = Recipes.objects.create(name='chicken',
                                              ingredients='fried',
                                              instructions='steak',
-                                             created=now,
-                                             modified=now,
                                              user=self.superuser)
 
     def test_can_get_recipe(self):
@@ -73,21 +66,16 @@ class ReadRecipeTests(APITestCase, UserMixin):
 class UpdateRecipesTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        self.now = timezone.now()
         self.recipe = Recipes.objects.create(name='chicken',
                                              ingredients='fried',
                                              instructions='steak',
-                                             created=self.now,
-                                             modified=self.now,
                                              user=self.superuser)
+        self.lastModified = self.recipe.modified
         self.data = {
             'name': 'n',
             'instructions': '1',
             'ingredients': '1',
-            'created': self.now,
-            'modified': self.now,
-            'user':
-            self.superuser.id,
+            'user': self.superuser.id,
             'subRecipes': []
         }
 
@@ -98,7 +86,7 @@ class UpdateRecipesTests(APITestCase, UserMixin):
         self.assertEqual(recipe.name, self.data['name'])
         self.assertEqual(recipe.ingredients, self.data['ingredients'])
         self.assertEqual(recipe.instructions, self.data['instructions'])
-        self.assertNotEqual(recipe.modified, self.now)
+        self.assertNotEqual(recipe.modified, self.lastModified)
 
     def test_cant_update_non_existent_recipe(self):
         response = self.client.put('/api/recipes/{}/'.format(self.recipe.id+1), self.data, format="json")
@@ -106,7 +94,7 @@ class UpdateRecipesTests(APITestCase, UserMixin):
 
     def test_cant_update_recipe_with_wrong_type(self):
         data = dict(self.data)
-        data['created'] = 1
+        data['name'] = ['a']
         response = self.client.put('/api/recipes/{}/'.format(self.recipe.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -114,12 +102,9 @@ class UpdateRecipesTests(APITestCase, UserMixin):
 class DeleteRecipesTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        self.now = timezone.now()
         self.recipe = Recipes.objects.create(name='chicken',
                                              ingredients='fried',
                                              instructions='steak',
-                                             created=self.now,
-                                             modified=self.now,
                                              user=self.superuser)
 
     def test_can_delete_recipe(self):
@@ -136,17 +121,16 @@ class DeleteRecipesTests(APITestCase, UserMixin):
 class CreateAllRecipesTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
-        self.data = [{
-            'name': 'n',
-            'instructions': '1',
-            'ingredients': '1',
-            'created': now,
-            'modified': now,
-            'user':
-            self.superuser.id,
-            'subRecipes': []
-        }]
+        self.data = [
+            {
+                'name': 'n',
+                'instructions': '1',
+                'ingredients': '1',
+                'user':
+                self.superuser.id,
+                'subRecipes': []
+            }
+        ]
 
     def test_cant_create_all_recipes(self):
         response = self.client.post('/api/allRecipes/', self.data, format='json')
@@ -166,16 +150,16 @@ class UpdateAllRecipesTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
         now = timezone.now()
-        self.data = [{
-            'name': 'n',
-            'instructions': '1',
-            'ingredients': '1',
-            'created': now,
-            'modified': now,
-            'user':
-            self.superuser.id,
-            'subRecipes': []
-        }]
+        self.data = [
+            {
+                'name': 'n',
+                'instructions': '1',
+                'ingredients': '1',
+                'user':
+                self.superuser.id,
+                'subRecipes': []
+            }
+        ]
 
     def test_cant_update_all_recipes(self):
         response = self.client.put('/api/allRecipes/', self.data, format='json')
@@ -194,8 +178,7 @@ class DeleteAllRecipesTests(APITestCase, UserMixin):
 class CreateBookmarksTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
-        self.data = {'name': 'b', 'url': 'path', 'created': now, 'modified': now, 'user': self.superuser.id}
+        self.data = {'name': 'b', 'url': 'path', 'user': self.superuser.id}
 
     def test_can_create_bookmark(self):
         response = self.client.post('/api/bookmarks/', self.data, format='json')
@@ -206,9 +189,9 @@ class CreateBookmarksTests(APITestCase, UserMixin):
         response = self.client.post('/api/bookmarks/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
-    def test_cant_create_bookmark_with_wrond_data_type(self):
+    def test_cant_create_bookmark_with_wrong_data_type(self):
         data = dict(self.data)
-        data['created'] = 1
+        data['name'] = ['a']
         response = self.client.post('/api/bookmarks/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -216,8 +199,7 @@ class CreateBookmarksTests(APITestCase, UserMixin):
 class ReadBookmarksTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
-        self.bookmark = Bookmarks.objects.create(name='hi', url='url', created=now, modified=now, user=self.superuser)
+        self.bookmark = Bookmarks.objects.create(name='hi', url='url', user=self.superuser)
 
     def test_can_read_bookmark(self):
         response = self.client.get('/api/bookmarks/{}/'.format(self.bookmark.id))
@@ -231,9 +213,8 @@ class ReadBookmarksTests(APITestCase, UserMixin):
 class UpdateBookmarksTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
-        self.bookmark = Bookmarks.objects.create(name='hi', url='url', created=now, modified=now, user=self.superuser)
-        self.data = {'name': 'h', 'url': 'u', 'created': now, 'modified': now, 'user': self.superuser.id}
+        self.bookmark = Bookmarks.objects.create(name='hi', url='url', user=self.superuser)
+        self.data = {'name': 'h', 'url': 'u', 'user': self.superuser.id}
 
     def test_can_update_bookmark(self):
         response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), self.data, format='json')
@@ -245,7 +226,7 @@ class UpdateBookmarksTests(APITestCase, UserMixin):
 
     def test_cant_update_bookmark_with_wrong_data_type(self):
         data = dict(self.data)
-        data['created'] = 1
+        data['name'] = ['a']
         response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
@@ -253,8 +234,7 @@ class UpdateBookmarksTests(APITestCase, UserMixin):
 class DeleteBookmarksTests(APITestCase, UserMixin):
     def setUp(self):
         self.create_user_and_login()
-        now = timezone.now()
-        self.bookmark = Bookmarks.objects.create(name='hi', url='url', created=now, modified=now, user=self.superuser)
+        self.bookmark = Bookmarks.objects.create(name='hi', url='url', user=self.superuser)
 
     def test_can_delete_bookmark(self):
         response = self.client.delete('/api/bookmarks/{}/'.format(self.bookmark.id))
@@ -265,3 +245,50 @@ class DeleteBookmarksTests(APITestCase, UserMixin):
     def test_cant_delete_non_existent_bookmark(self):
         response = self.client.delete('/api/bookmarks/{}/'.format(self.bookmark.id+1))
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class CreateTagsTests(APITestCase, UserMixin):
+    def setUp(self):
+        self.create_user_and_login()
+        self.data = {'name': 'new'}
+
+    def test_can_create_tag(self):
+        response = self.client.post('/api/tags/', self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_cant_create_tag_with_wrong_data_type(self):
+        data = dict(self.data)
+        data['name'] = [1]
+        response = self.client.post('/api/tags/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+
+class ReadTagsTests(APITestCase, UserMixin):
+    def setUp(self):
+        self.create_user_and_login()
+        self.tag = Tags.objects.create(name='new')
+
+    def test_can_read_tag(self):
+        response = self.client.get('/api/tags/{}/'.format(self.tag.id))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def _test_cant_read_non_existent_tag(self):
+        response = self.client.get('/api/tags/{}'.format(self.tag.id))
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+
+class UpdateTagsTests(APITestCase, UserMixin):
+    def setUp(self):
+        self.create_user_and_login()
+        self.tag = Tags.objects.create(name='new')
+        self.data = {'name': 'new1'}
+
+    def test_can_create_tag(self):
+        response = self.client.post('/api/tags/', self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_cant_create_tag_with_wrong_data_type(self):
+        data = dict(self.data)
+        data['name'] = [1]
+        response = self.client.post('/api/tags/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
