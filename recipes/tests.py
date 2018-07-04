@@ -1,5 +1,4 @@
 from django.contrib.auth.models import User
-from django.urls import include, path, reverse
 from django.utils import timezone
 
 from rest_framework import status

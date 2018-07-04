@@ -11,17 +11,23 @@ from .serializers import UserSerializer
 class LoginView(views.APIView):
     @method_decorator(csrf_protect)
     def post(self, request):
-        user = authenticate(
-            username=request.data.get('username'),
-            password=request.data.get('password'))
+        username = request.data.get('username')
+        password = request.data.get('password')
+        user = authenticate(username=username, password=password)
         if user and user.is_active:
             login(request, user)
             response = Response(UserSerializer(user).data)
         else:
-            response = Response({
-                'status': 'Unauthorized',
-                'message': 'Username or password is incorrect'
-            }, status=status.HTTP_401_UNAUTHORIZED)
+            if username is None or password is None:
+                response = Response({
+                    'status': 'Bad Request',
+                    'message': "'username' and 'password' are required fields"
+                }, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                response = Response({
+                    'status': 'Unauthorized',
+                    'message': 'Username or password is incorrect'
+                }, status=status.HTTP_401_UNAUTHORIZED)
 
         return response
 
