@@ -31,7 +31,10 @@
                                     <span class="caret"></span>
                                 </a>
                                 {% verbatim %}
-                                <ul class="dropdown-menu" ng-controller="MyBookmarksController">
+                                <ul class="dropdown-menu" ng-controller="BookmarksController">
+                                    <li><a href ng-click="add()">add bookmark</a></li>
+                                    <li class="divider" role="separator"></li>
+                                    <li class="dropdown-header">links</li>
                                     <li ng-repeat="bookmark in bookmarks track by $index"><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></li>
                                 </ul>
                                 {% endverbatim %}
@@ -55,13 +58,16 @@
                 crossorigin="anonymous"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-route.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-animate.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.2/angular-touch.min.js"></script>
+        <script src="https://cdn.rawgit.com/angular-ui/bootstrap/gh-pages/ui-bootstrap-tpls-2.5.0.js"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
         <script src="{% static "js\app.js" %}"></script>
         <script src="{% static "js\user.service.js" %}"></script>
         <script src="{% static "js\recipes.service.js" %}"></script>
         <script src="{% static "js\NavbarController.js" %}"></script>
         <script src="{% static "js\LoginController.js" %}"></script>
-        <script src="{% static "js\MyBookmarksController.js" %}"></script>
+        <script src="{% static "js\BookmarksController.js" %}"></script>
         <script src="{% static "js\RecipesController.js" %}"></script>
         <script src="{% static "js\AddRecipeController.js" %}"></script>
         <script src="{% static "js\saveScrollPosition.directive.js" %}"></script>

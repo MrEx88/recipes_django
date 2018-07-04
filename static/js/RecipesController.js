@@ -10,13 +10,13 @@
                 '/allRecipes/': 'All Recipes'
             }
             $scope.title = titles[$location.path()];
-            console.log($location.path());
-            recipesService.getUsersRecipes().then(function(data) {
-                $scope.recipes = data;
-            });
             
             $scope.ingredientsToArray = function(ingredients) {
                 return ingredients.split('\r\n');
             }
+
+            recipesService.getUsersRecipes().then(function(data) {
+                $scope.recipes = data;
+            });
         }]);
 }());

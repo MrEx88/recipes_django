@@ -1,0 +1,15 @@
+<div class="modal-header">
+    <h3 class="modal-title">Add Bookmark</h3>
+</div>
+    <div class="modal-body">
+        <label>Name:</label><br />
+        <input type="text" ng-model="bookmark.name" /><br />
+        <label>Url:</label><br />
+        <input type="text" ng-model="bookmark.url" /><br />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-warning" type="button" ng-click="save(true)">Save</button>
+        <button class="btn btn-warning" type="button" ng-click="save(false)">Save & Add another</button>
+        <button class="btn btn-warning" type="button" ng-click="close()">Cancel</button>
+    </div>
+</div>

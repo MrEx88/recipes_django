@@ -17,7 +17,13 @@
                             });
             },
             isLoggedIn: function() {
-                return !(angular.equals(loggedInUser, {}));
+                return $http.get('/auth_api/loggedIn/')
+                            .then(function(response) {
+                                return response.data.isLoggedIn;
+                            })
+                            .catch(function() {
+                                return false;
+                            });
             }
         };
     }]);

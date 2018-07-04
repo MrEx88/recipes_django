@@ -1,7 +1,7 @@
 (function() {
     'use strict';
     
-    angular.module('recipes', ['ngRoute'])
+    angular.module('recipes', ['ngRoute', 'ui.bootstrap'])
           .run(['$http', function($http) {
               $http.defaults.xsrfHeaderName = 'X-CSRFToken';
               $http.defaults.xsrfCookieName = 'csrftoken';

@@ -30,3 +30,9 @@ class LogoutView(views.APIView):
     def get(self, request):
         logout(request)
         return Response({}, status=status.HTTP_204_NO_CONTENT)
+
+
+class LoggedInView(views.APIView):
+    def get(self, request):
+        data = {'isLoggedIn': request.user.is_authenticated}
+        return Response(data, status=status.HTTP_200_OK)
