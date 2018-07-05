@@ -14,7 +14,15 @@
             }
             
             $scope.$on('loggedIn', function(event, data) {
-                $scope.isLoggedIn = userService.isLoggedIn();
+                updateLoggedOnStatus();
             });
+
+            function updateLoggedOnStatus() {
+                userService.isLoggedIn().then(function(data) {
+                    $scope.isLoggedIn = data;
+                });
+            }
+
+            updateLoggedOnStatus();
         }]);
 }());
