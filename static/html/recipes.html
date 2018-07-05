@@ -9,7 +9,7 @@
 <input type="checkbox" ng-model="reverse" />
 <span>reverse</span><br />
 <label>filter:</label><br />
-<input type="text" ng-model="filterBy">
-<div ng-repeat="recipe in recipes| filter: filterBy | orderBy:sortOrder:reverse">
+<input type="text" ng-model="byText">
+<div ng-repeat="recipe in recipes | filter:tagFilter | filter: byText | orderBy:sortOrder:reverse">
     <view-recipe></view-recipe>
 </div>

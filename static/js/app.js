@@ -26,7 +26,6 @@
                 })
                 .otherwise({
                     resolveRedirectTo: ['userService', function(userService) {
-                        console.log(userService.isLoggedIn())
                         return userService.isLoggedIn() ? '/myRecipes/' : '/login/';
                     }]
                 });

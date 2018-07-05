@@ -10,9 +10,29 @@
                 '/allRecipes/': 'All Recipes'
             }
             $scope.title = titles[$location.path()];
-            
+            $scope.tags = [];
+
             $scope.ingredientsToArray = function(ingredients) {
                 return ingredients.split('\r\n');
+            }
+
+            $scope.setTagFilter = function(tagName) {
+                $scope.tags = [tagName];
+            }
+
+            $scope.tagFilter = function(recipe) {
+                var show =  $scope.tags.length == 0;
+                if (!show) {
+                    angular.forEach(recipe.tags, function(tag) {
+                        for (var i = 0; i < $scope.tags.length; i++) {
+                            if (tag.name == $scope.tags[i]) {
+                                show = true;
+                                break;
+                            }
+                        }
+                    });
+                }
+                return show;
             }
 
             recipesService.getUsersRecipes().then(function(data) {
