@@ -3,7 +3,7 @@ from django.utils import timezone
 
 from rest_framework import serializers
 
-from .models import Bookmarks, Recipes, RecipesTags, RecipesUsers, SubRecipes, Tags
+from .models import Bookmarks, Recipes, RecipesUsers, SubRecipes, Tags
 
 
 class BookmarkSerializer(serializers.ModelSerializer):
@@ -24,8 +24,16 @@ class SubRecipeSerializer(serializers.ModelSerializer):
         }
 
 
+class TagSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Tags
+        fields = '__all__'
+
+
 class RecipeSerializer(serializers.ModelSerializer):
     subRecipes = SubRecipeSerializer(many=True, read_only=False)
+    tags = TagSerializer(many=True, read_only=True)
 
     class Meta:
         model = Recipes
@@ -75,22 +83,8 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'name')
 
 
-class RecipesTagSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = RecipesTags
-        fields = '__all__'
-
-
 class RecipesUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = RecipesUsers
-        fields = '__all__'
-
-
-class TagSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Tags
         fields = '__all__'

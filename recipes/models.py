@@ -19,6 +19,18 @@ class Bookmarks(models.Model):
         return '{{{0}: {1}}}'.format(self.id, self.name)
 
 
+class Tags(models.Model):
+    name = models.CharField(unique=True, max_length=255, blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        db_table = 'tags'
+
+    def __str__(self):
+        return '{{{0}: {1}}}'.format(self.id, self.name)
+
+
 class Recipes(models.Model):
     name = models.CharField(unique=True, max_length=100)
     ingredients = models.TextField()
@@ -27,6 +39,7 @@ class Recipes(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, related_name='recipes', on_delete=models.CASCADE)
+    tags = models.ManyToManyField(Tags, through='RecipesTags', through_fields=('recipe', 'tag'))
 
     class Meta:
         db_table = 'recipes'
@@ -46,18 +59,6 @@ class SubRecipes(models.Model):
 
     class Meta:
         db_table = 'SubRecipes'
-
-    def __str__(self):
-        return '{{{0}: {1}}}'.format(self.id, self.name)
-
-
-class Tags(models.Model):
-    name = models.CharField(unique=True, max_length=255, blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-    modified = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'tags'
 
     def __str__(self):
         return '{{{0}: {1}}}'.format(self.id, self.name)
