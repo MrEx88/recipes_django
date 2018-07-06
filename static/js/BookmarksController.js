@@ -2,10 +2,24 @@
     'use strict';
     
     angular.module('recipes')
-        .service('bookmarksService', function() {
-            this.shared = [];
-        })
-        .controller('BookmarksController', ['$scope', '$uibModal', 'recipesService', 'bookmarksService', function ($scope, $uibModal, recipesService, bookmarksService) {
+        .service('bookmarksService', ['$http', function($http) {
+            var self = this;
+            self.shared = [];
+
+            this.getUsersBookmarks = function() {
+                //todo: need to add user id some how. Or do I. maybe i can do it in django
+                return $http.get('/api/bookmarks/')
+                    .then(function(response) {
+                        self.shared = response.data;
+                        return response.data;
+                    })
+                    .catch(function(response) {
+                        self.shared = [];
+                        return [];
+                    });
+            }
+        }])
+        .controller('BookmarksController', ['$scope', '$uibModal', 'bookmarksService', function ($scope, $uibModal, bookmarksService) {
             $scope.bookmarks = [];
 
             $scope.add = function() {
@@ -26,12 +40,11 @@
                 $scope.bookmarks.push(data);
             });
 
-            recipesService.getUsersBookmarks().then(function(data) {
-                $scope.bookmarks = data;
-                bookmarksService.shared = data;
+            bookmarksService.getUsersBookmarks().then(function(data) {
+                $scope.bookmarks = bookmarksService.shared;
             });
         }])
-        .controller('AddBookmarkController', ['$scope', '$http', '$uibModalInstance', '$rootScope', function ($scope, $http, $uibModalInstance, $rootScope) {
+        .controller('AddBookmarkController', ['$scope', '$http', '$uibModalInstance', '$rootScope', 'bookmarksService', function ($scope, $http, $uibModalInstance, $rootScope, bookmarksService) {
             $scope.bookmark = {};
 
             $scope.save = function(closeAfterSave) {
@@ -45,6 +58,8 @@
                         else {
                             $scope.bookmark = {};
                         }
+
+                        bookmarksService.getUsersBookmarks();
                     });
             }
 
@@ -63,6 +78,22 @@
                         });
                 });
                 bookmarksService.shared = $scope.bookmarks;
+                if (closeAfterSave) {
+                    $scope.close();
+                }
+            }
+
+            $scope.deleteSelected = function(closeAfterSave) {
+                for (var i = 0; i < $scope.bookmarks.length; i++) {
+                    if ($scope.bookmarks[i].isSelected) {
+                        $http.delete('/api/bookmarks/' + $scope.bookmarks[i].id + '/')
+                            .then(function(response) {
+                                console.log($scope.bookmarks.splice(i, 1));
+                                bookmarksService.shared = $scope.bookmarks;
+                            });
+                    }
+                }
+                
                 if (closeAfterSave) {
                     $scope.close();
                 }

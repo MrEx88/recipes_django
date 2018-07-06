@@ -1,16 +1,6 @@
 (function() {
     angular.module('recipes').factory('recipesService', ['$http', '$location', function($http, $location) {
         return {
-            getUsersBookmarks: function() {
-                //todo: need to add user id some how. Or do I. maybe i can do it in django
-                return $http.get('/api/bookmarks/')
-                            .then(function(response) {
-                                return response.data;
-                            })
-                            .catch(function(response) {
-                                return [];
-                            });
-            },
             getUsersRecipes: function() {
                 //todo: need to add user id some how. Or do I. maybe i can do it in django
                 return $http.get('/api/recipes/')
