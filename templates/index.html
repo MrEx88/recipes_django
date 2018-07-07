@@ -36,7 +36,7 @@
                                     <li><a href ng-click="editAll()">edit bookmarks</a></li>
                                     <li class="divider" role="separator"></li>
                                     <li class="dropdown-header">links</li>
-                                    <li ng-repeat="bookmark in bookmarks track by $index"><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></li>
+                                    <li ng-repeat="bookmark in bookmarks.shared track by $index"><a href="{{bookmark.url}}" target="_blank">{{bookmark.name}}</a></li>
                                 </ul>
                                 {% endverbatim %}
                             </li>
