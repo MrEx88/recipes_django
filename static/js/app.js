@@ -24,6 +24,10 @@
                     templateUrl: '/static/html/add-recipe.html',
                     controller: 'AddRecipeController',
                 })
+                .when('/recipeDetail/:id/', {
+                    templateUrl: '/static/html/recipe-detail.html',
+                    controller: 'RecipeDetailController',
+                })
                 .otherwise({
                     resolveRedirectTo: ['userService', function(userService) {
                         return userService.isLoggedIn() ? '/myRecipes/' : '/login/';

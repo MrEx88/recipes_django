@@ -11,5 +11,5 @@
 <label>filter:</label><br />
 <input type="text" ng-model="byText">
 <div ng-repeat="recipe in recipes | filter:tagFilter | filter: byText | orderBy:sortOrder:reverse">
-    <view-recipe></view-recipe>
+    <recipe-tile></recipe-tile>
 </div>

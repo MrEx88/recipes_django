@@ -38,5 +38,13 @@
             recipesService.getUsersRecipes().then(function(data) {
                 $scope.recipes = data;
             });
+        }])
+        .controller('RecipeDetailController', ['$scope', '$routeParams', 'recipesService', function($scope, $routeParams, recipesService) {
+            for (var i = 0; i < recipesService.shared.length; i++) {
+                if (recipesService.shared[i].id == $routeParams.id) {
+                    $scope.recipe = recipesService.shared[i];
+                    break;
+                }
+            }
         }]);
 }());

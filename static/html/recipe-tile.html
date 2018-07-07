@@ -1,0 +1,5 @@
+<div class="recipeTile">
+    <h4>{{recipe.name}}</h4>
+    <a href ng-repeat="tag in recipe.tags" ng-click="setTagFilter(tag.name)"><span class="badge">{{tag.name}}</span></a><br />
+    <a href="#!/recipeDetail/{{recipe.id}}" ><img ng-src="../../static/{{recipe.imagePath}}" ng-if="recipe.imagePath" /></a>
+</div>

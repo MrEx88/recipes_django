@@ -13,3 +13,12 @@ body {
     justify-content: center;
     align-items: center;
 }
+
+.recipeTile {
+    display: inline;
+}
+
+.recipeTile img {
+    max-width: 200px;
+    max-height: 150px;
+}

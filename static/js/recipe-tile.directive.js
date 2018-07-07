@@ -2,9 +2,9 @@
     'use strict';
     
     angular.module('recipes')
-        .directive('viewRecipe', function() {
+        .directive('recipeTile', function() {
             return {
-                templateUrl: '/static/html/view-recipe.html',
+                templateUrl: '/static/html/recipe-tile.html',
                 restrict: 'E'
             }
         });
