@@ -91,6 +91,57 @@
         .controller('EditBookmarksController', ['$scope', '$uibModalInstance', 'bookmarksService', function ($scope, $uibModalInstance, bookmarksService) {
             $scope.bookmarks = bookmarksService;
 
+            $scope.selectAll = function() {
+                for (var i = 0; i < $scope.bookmarks.shared.length; i++) {
+                    $scope.bookmarks.shared[i].isSelected = $scope.isSelectAll;
+                }
+            }
+
+            $scope.selectUnselectRows = function(index, event) {
+                const LEFT_MOUSE_BTN = 1;
+                if (event.which == LEFT_MOUSE_BTN) {
+                    var row = $scope.bookmarks.shared[index];
+                    row.rowIndex = index;
+
+                    if (!event.ctrlKey && !event.shiftKey) {
+                        $scope.clearSelected();
+                        $scope.toggleRow(row);
+                        $scope.selectionPivot = row;
+                    }
+                    else if(event.ctrlKey) {
+                        $scope.toggleRow(row);
+                        $scope.selectionPivot = row;
+                    }
+                    else if(event.shiftKey) {
+                        $scope.clearSelected();
+                        $scope.selectRowsBetweenIndexes($scope.selectionPivot.rowIndex, row.rowIndex);
+                    }
+                }
+            }
+
+            $scope.clearSelected = function() {
+                for (var i = 0; i < $scope.bookmarks.shared.length; i++) {
+                    $scope.bookmarks.shared[i].isSelected = false;
+                }
+            }
+
+            $scope.toggleRow = function (row) {
+                row.isSelected = !(row.isSelected);
+            }
+
+            $scope.selectRowsBetweenIndexes = function (index1, index2) {
+                var bottom = Math.min(index1, index2);
+                var top = Math.max(index1, index2);
+
+                for (var i = bottom; i <= top; i++) {
+                    $scope.bookmarks.shared[i].isSelected = true;
+                }
+            }
+
+            $scope.isRowSelected = function (index) {
+                return $scope.bookmarks.shared[index].isSelected;
+            }
+
             $scope.saveEdits = function(closeAfterSave) {
                 angular.forEach($scope.bookmarks.shared, function(bookmark) {
                     bookmarksService.updateBookmark(bookmark)

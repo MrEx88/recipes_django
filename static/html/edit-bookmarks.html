@@ -1,19 +1,42 @@
 <div class="modal-header">
+    <button class="btn btn-danger modal-close-button" ng-click="close()">X</button>
+    <div class="clear"></div>
     <h3 class="modal-title">Edit Bookmarks</h3>
 </div>
-    <input type="checkbox" /><span>select all for deletion</span><br>
-    <div class="modal-body">
-        <div ng-repeat="bookmark in bookmarks.shared">
-            <label>Name:</label><br />
-            <input type="text" ng-model="bookmark.name" /><br />
-            <label>Url:</label><br />
-            <input type="text" ng-model="bookmark.url" /><input type="checkbox" ng-model="bookmark.isSelected" />
-        </div>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-warning" type="button" ng-click="saveEdits(true)">Save</button>
-        <button class="btn btn-warning" type="button" ng-click="saveEdits(false)">Save & Continue</button>
-        <button class="btn btn-warning" type="button" ng-click="close()">Cancel</button>
-        <button class="btn btn-warning" type="button" ng-click="deleteSelected(true)">Delete Selected</button>
-    </div>
+<div class="checkbox">
+    <label>
+        <input type="checkbox" ng-model='isSelectAll' ng-click="selectAll()" />
+        <span class="cr">
+            <i class="cr-icon fa fa-check"></i>
+        </span>
+        Select All
+    </label>
+</div>
+<div class="modal-body">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>index</th>
+                <th>bookmark</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="bookmark in bookmarks.shared" ng-click="selectUnselectRows($index, $event)">
+                <td style="text-align:center;" ng-class="{'table-row-selected': isRowSelected($index)}">{{$index+1}}</td>
+                <td ng-class="{'table-row-selected': isRowSelected($index)}">
+                    <div>
+                        <label>Name:</label><br />
+                        <input type="text" ng-model="bookmark.name" /><br />
+                        <label>Url:</label><br />
+                        <input type="text" ng-model="bookmark.url" />
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" type="button" ng-click="saveEdits(true)">Save & Close</button>
+    <button class="btn btn-warning" type="button" ng-click="saveEdits(false)">Save & Continue</button>
+    <button class="btn btn-warning" type="button" ng-click="deleteSelected(true)">Delete Selected</button>
 </div>

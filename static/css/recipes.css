@@ -3,6 +3,14 @@ body {
     height: 100%
 }
 
+nav li {
+    list-style: none;
+}
+
+thead th {
+    text-align: center;
+}
+
 #mainContainer {
     margin-top: 10%;
 }
@@ -14,6 +22,14 @@ body {
     align-items: center;
 }
 
+.clear {
+    clear: both;
+}
+
+.modal-close-button {
+    float: right;
+}
+
 .recipeTile {
     display: inline;
 }
@@ -21,4 +37,13 @@ body {
 .recipeTile img {
     max-width: 200px;
     max-height: 150px;
+}
+
+.table-row {
+    position: relative;
+    height: 100%;
+    width: 100%;
+}
+.table-row-selected {
+    background-color: rgba(225, 144, 22, 0.272) !important;
 }
