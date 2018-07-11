@@ -1,15 +1,20 @@
 <h3>{{title}}</h3>
 <br />
-<label>sort:</label><br />
-<select ng-model="sortOrder">
-    <option value="+name">name</option>
-    <option value="-modified">recently modified</option>
-    <option value="+created">oldest</option>
-</select>
-<input type="checkbox" ng-model="reverse" />
-<span>reverse</span><br />
-<label>filter:</label><br />
-<input type="text" ng-model="byText">
-<div ng-repeat="recipe in recipes | filter:tagFilter | filter: byText | orderBy:sortOrder:reverse">
-    <recipe-tile></recipe-tile>
+<hr />
+<label ng-click="showFilters=!showFilters">{{showFilters ? "Hide Filters" : "Show Filters"}}</label><br />
+<div ng-show="showFilters" mg-model="showFilters">
+    <label>sort:</label><br />
+    <select ng-model="sortOrder">
+        <option value="+name">name</option>
+        <option value="-modified">recently modified</option>
+        <option value="+created">oldest</option>
+    </select>
+    <input type="checkbox" ng-model="reverse" />
+    <span>reverse</span><br />
+    <label>filter:</label><br />
+    <input type="text" ng-model="byText"><br />
+    <hr />
+</div>
+<div class="recipe-span" ng-repeat="recipe in recipes | filter:tagFilter | filter: byText | orderBy:sortOrder:reverse">
+    <recipe-tile class="recipe-tile"></recipe-tile>
 </div>

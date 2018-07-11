@@ -4,6 +4,7 @@
     angular.module('recipes')
         .controller('RecipesController', ['$scope', '$location', 'recipesService', function ($scope, $location, recipesService) {
             $scope.recipes = [];
+            $scope.showFilters = false;
             $scope.sortOrder = '-modified';
             var titles = {
                 '/myRecipes/': 'My Recipes',
