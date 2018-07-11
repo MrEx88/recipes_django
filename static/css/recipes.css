@@ -30,6 +30,17 @@ thead th {
     float: right;
 }
 
+.multi-link > a {
+    margin-left: 20px;
+    color: black;
+    text-decoration: none;
+}
+
+.multi-link > .right-button {
+    float: right;
+    margin-right: 5px;
+}
+
 .recipeTile {
     display: inline;
 }

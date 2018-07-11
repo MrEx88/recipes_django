@@ -9,7 +9,7 @@
             this.addBookmark = function(bookmark) {
                 return $http.post('/api/bookmarks/', bookmark)
                     .then(function(response) {
-                        shared.push(bookmark);
+                        self.shared.push(bookmark);
                         return response.data;
                     });
             }
@@ -64,6 +64,15 @@
                     templateUrl: '/static/html/edit-bookmarks.html',
                     controller: 'EditBookmarksController'
                 });
+            }
+
+            $scope.delete = function(bookmark) {
+                if (confirm(`Are you sure you want to delete ${bookmark.name}?`)) {
+                    bookmarksService.deleteBookmark(bookmark)
+                        .then(function(data) {
+                            //todo: add sucess message https://stackoverflow.com/questions/23412880/how-to-show-message-for-a-certain-time-in-angularjs
+                        });
+                }
             }
 
             bookmarksService.getBookmarks();
@@ -158,7 +167,7 @@
             $scope.deleteSelected = function(closeAfterSave) {
                 for (var i = 0; i < $scope.bookmarks.shared.length; i++) {
                     if ($scope.bookmarks.shared[i].isSelected) {
-                        bookmarksService.deleteUsersBookmark($scope.bookmarks.shared[i])
+                        bookmarksService.deleteBookmark($scope.bookmarks.shared[i])
                             .then(function(data) {
                                 
                             });
