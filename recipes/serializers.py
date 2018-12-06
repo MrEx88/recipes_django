@@ -5,12 +5,36 @@ from rest_framework import serializers
 
 from .models import Bookmarks, Recipes, RecipesUsers, SubRecipes, Tags
 
+def _set_time(*args):
+    now = timezone.now()
+    for a in args:
+        a = now
+
+def _has_http(url):
+     return url.startswith('http://') or url.startswith('https://')
 
 class BookmarkSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bookmarks
         fields = '__all__'
+
+    def create(self, validated_data):
+        bookmark = Bookmarks.objects.create(**validated_data)
+        if not _has_http(bookmark.url):
+            bookmark.url = 'http://' + bookmark.url
+        _set_time(bookmark.created, bookmark.modified)
+        bookmark.save()
+        return bookmark
+
+    def update(self, instance, validated_data):
+        instance.name = validated_data.get('name', instance.name)
+        instance.url = validated_data.get('url', instance.url)
+        if not _has_http(instance.url):
+            instance.url = 'http://' + instance.url
+        _set_time(instance.modified)
+        instance.save()
+        return instance
 
 
 class SubRecipeSerializer(serializers.ModelSerializer):
@@ -45,9 +69,7 @@ class RecipeSerializer(serializers.ModelSerializer):
             sub_recipe = SubRecipes.objects.create(**data)
             sub_recipe.save()
         recipe = Recipes.objects.create(**validated_data)
-        now = timezone.now()
-        recipe.created = now
-        recipe.modified = now
+        _set_time(recipe.created, recipe.modified)
         recipe.save()
         return recipe
 
@@ -56,7 +78,7 @@ class RecipeSerializer(serializers.ModelSerializer):
         instance.ingredients = validated_data.get('ingredients', instance.name)
         instance.instructions = validated_data.get('instructions', instance.instructions)
         instance.imagePath = validated_data.get('imagePath', instance.imagePath)
-        instance.modified = timezone.now()
+        _set_time(instance.modified)
         instance.save()
 
         sub_recipes = validated_data.pop('subRecipes')

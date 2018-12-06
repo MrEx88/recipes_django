@@ -193,6 +193,24 @@ class CreateBookmarksTests(APITestCase, UserMixin):
         response = self.client.post('/api/bookmarks/', data, format='json')
         self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
+    def test_bookmark_without_http_will_be_added(self):
+        response = self.client.post('/api/bookmarks/', self.data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['url'], 'http://' + self.data['url'])
+
+    def test_bookmark_with_http_will_not_be_added_again(self):
+        data = dict(self.data)
+        data['url'] = 'http://' + data['url']
+        response = self.client.post('/api/bookmarks/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['url'], data['url'])
+
+    def test_bookmark_with_https_will_not_be_added_again(self):
+        data = dict(self.data)
+        data['url'] = 'https://' + data['url']
+        response = self.client.post('/api/bookmarks/', data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(response.data['url'], data['url'])
 
 class ReadBookmarksTests(APITestCase, UserMixin):
     def setUp(self):
@@ -217,12 +235,32 @@ class UpdateBookmarksTests(APITestCase, UserMixin):
         self.bookmark = Bookmarks.objects.create(name='hi', url='url', user=self.superuser)
         self.data = {'name': 'h', 'url': 'u', 'user': self.superuser.id}
 
-    def test_can_update_bookmark(self):
+    def test_updating_bookmark_without_http_will_add_http(self):
         response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         bookmark = Bookmarks.objects.get(pk=self.bookmark.id)
         self.assertEqual(bookmark.name, self.data['name'])
-        self.assertEqual(bookmark.url, self.data['url'])
+        self.assertEqual(bookmark.url, 'http://' + self.data['url'])
+        self.assertNotEqual(bookmark.modified, self.bookmark.modified)
+
+    def test_updating_bookmark_with_http_will_not_add_http_again(self):
+        data = dict(self.data)
+        data['url'] = 'http://' + data['url']
+        response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        bookmark = Bookmarks.objects.get(pk=self.bookmark.id)
+        self.assertEqual(bookmark.name, data['name'])
+        self.assertEqual(bookmark.url, data['url'])
+        self.assertNotEqual(bookmark.modified, self.bookmark.modified)
+
+    def test_updating_bookmark_with_https_will_not_add_http_again(self):
+        data = dict(self.data)
+        data['url'] = 'https://' + data['url']
+        response = self.client.put('/api/bookmarks/{}/'.format(self.bookmark.id), data, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        bookmark = Bookmarks.objects.get(pk=self.bookmark.id)
+        self.assertEqual(bookmark.name, data['name'])
+        self.assertEqual(bookmark.url, data['url'])
         self.assertNotEqual(bookmark.modified, self.bookmark.modified)
 
     def test_cant_update_non_existent_bookmark(self):
